@@ -1,0 +1,432 @@
+cat << 'EOF' > index.html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boyka Scripts Hub | موسوعة أدوات تيرموكس الشاملة</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --btn-color: #e11d48;
+            --btn-hover: #be123c;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --code-bg: #090d16;
+        }
+        .light {
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-color: #0f172a;
+            --text-muted: #64748b;
+            --accent: #0284c7;
+            --btn-color: #dc2626;
+            --btn-hover: #b91c1c;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --code-bg: #1e293b;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            transition: 0.3s;
+        }
+        .container { max-width: 750px; margin: 0 auto; }
+        header {
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            text-align: center;
+            border: 1px solid var(--border-color);
+            margin-bottom: 25px;
+        }
+        .logo-title {
+            font-size: 30px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #38bdf8, #e11d48);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 0 5px 0;
+        }
+        .sub-title { color: var(--text-muted); font-size: 14px; margin-bottom: 15px; }
+        .top-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .theme-toggle, .visitor-badge {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        /* Search Box */
+        .search-box { position: relative; margin-bottom: 25px; }
+        .search-box input {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            border-radius: 15px;
+            font-size: 16px;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .search-box input:focus { border-color: var(--accent); }
+        .search-box i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 18px; }
+
+        /* Blog Post Card Style */
+        .post-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: 0.3s;
+        }
+        .post-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+        .post-category {
+            background: var(--accent);
+            color: #0f172a;
+            font-weight: bold;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .post-title { font-size: 18px; font-weight: bold; margin: 0 0 10px 0; line-height: 1.4; }
+        .post-snippet { color: var(--text-muted); font-size: 13px; margin-bottom: 15px; line-height: 1.6; }
+        
+        .read-more-btn {
+            background: var(--btn-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .read-more-btn:hover { background: var(--btn-hover); }
+
+        /* Detail Page */
+        .detail-page {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 25px;
+            display: none;
+        }
+        .detail-page h2 { color: var(--accent); margin-top: 0; }
+        .command-box {
+            background: var(--code-bg);
+            padding: 12px 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            direction: ltr;
+            font-family: monospace;
+            font-size: 13px;
+            color: #38bdf8;
+            border: 1px solid var(--border-color);
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        .copy-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        .section-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+        }
+        .section-box h4 { margin: 0 0 8px 0; color: #f43f5e; font-size: 15px; }
+        .section-box p { margin: 0; color: var(--text-muted); font-size: 13px; line-height: 1.7; }
+
+        .back-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hidden { display: none !important; }
+        .social-bar { display: flex; justify-content: center; gap: 15px; margin-top: 30px; }
+        .social-btn {
+            background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color);
+            width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; text-decoration: none; font-size: 18px; transition: 0.3s;
+        }
+        .social-btn:hover { background: var(--accent); color: white; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Controls -->
+        <div class="top-controls">
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon" id="theme-icon"></i> <span id="theme-text">الوضع المظلم</span>
+            </button>
+            <div class="visitor-badge">
+                <i class="fas fa-eye" style="color: #38bdf8;"></i> الزيارات: <span id="visitor-count">208,400</span>
+            </div>
+        </div>
+
+        <header>
+            <h1 class="logo-title">BOYKA SCRIPTS</h1>
+            <div class="sub-title">الموسوعة الشاملة لأكثر من 10,000 أداة وسكريبت تيرموكس مع الشرح وحل المشاكل 🚀</div>
+        </header>
+
+        <!-- Main Blog Feed -->
+        <div id="homeFeed">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="ابحث في آلاف الأدوات والسكربتات بالاسم أو الأمر..." onkeyup="searchTools()">
+                <i class="fas fa-search"></i>
+            </div>
+
+            <!-- Posts Container -->
+            <div id="postsList"></div>
+        </div>
+
+        <!-- Tool Detail Page -->
+        <div id="detailPage" class="detail-page">
+            <button class="back-btn" onclick="goHome()"><i class="fas fa-arrow-right"></i> الرجوع للرئيسية</button>
+            <h2 id="detailTitle">عنوان الأداة</h2>
+            <span id="detailCategory" class="post-category">التصنيف</span>
+            
+            <h4 style="margin: 15px 0 5px 0;">أمر التثبيت في تيرموكس:</h4>
+            <div class="command-box">
+                <span id="detailCommand">pkg install tool</span>
+                <button class="copy-btn" onclick="copyDetailCommand()">نسخ الأمر ✓</button>
+            </div>
+
+            <div class="section-box">
+                <h4><i class="fas fa-book-open"></i> كيفية التشغيل والشرح الكامل:</h4>
+                <p id="detailDesc">الشرح...</p>
+            </div>
+
+            <div class="section-box" style="border-color: rgba(244, 63, 94, 0.3);">
+                <h4><i class="fas fa-exclamation-triangle"></i> المشاكل الشائعة وكيفية حلها:</h4>
+                <p id="detailIssues">المشاكل والحلول...</p>
+            </div>
+        </div>
+
+        <!-- Social Media -->
+        <div class="social-bar">
+            <a href="https://t.me/screbt_Termux_x2" class="social-btn" target="_blank" title="قناة سكربتات تيرموكس"><i class="fas fa-terminal"></i></a>
+            <a href="https://t.me/+201061777536" class="social-btn" target="_blank" title="تليجرام الشخصي"><i class="fab fa-telegram-plane"></i></a>
+            <a href="https://wa.me/201119682198" class="social-btn" target="_blank" title="واتساب"><i class="fab fa-whatsapp"></i></a>
+        </div>
+    </div>
+
+    <script>
+        // قاعدة بيانات ضخمة وموسعة لأدوات وسكربتات تيرموكس الاحترافية
+        const toolsData = [
+            { id: 1, cat: "تحديث وحزم النظام", title: "تحديث وتجهيز حزم تيرموكس الشاملة", snippet: "الأمر الأساسي لإصلاح المستودعات وتحديث كافة أدوات تيرموكس لأحدث إصدار.", cmd: "pkg update && pkg upgrade -y", desc: "يقوم بالاتصال بمستودعات تيرموكس الرسمية لتحديث كافة الحزم والبرمجيات المثبتة على هاتفك.", issues: "فشل الاتصال: حلها بـ termux-change-repo." },
+            { id: 2, cat: "فحص الشبكات والأمان", title: "أداة Nmap الفاحصة للمنافذ والثغرات", snippet: "أداة الأمن السيبراني لاكتشاف المنافذ المفتوحة وفحص الشبكات والمضيفين.", cmd: "pkg install nmap -y && nmap localhost", desc: "تُستخدم لفحص شبكات الواي فاي والمنافذ المفتوحة ومعرفة الخدمات التي تعمل.", issues: "عدم عمل الأداة: تأكد من تحديث الحزم وتثبيت مستودعات Root-Repo." },
+            { id: 3, cat: "تطوير وسكربتات البايثون", title: "سيرفر بايثون المحلي السريع", snippet: "يُنشئ سيرفر ويب محلي من مجلد هاتفك لمشاركة الملفات عبر الواي فاي.", cmd: "python3 -m http.server 8080", desc: "تفتح بورت 8080 لتصفح ملفات هاتفك أو موقعك من أي جهاز على الشبكة.", issues: "بورت مشغول: غير الرقم إلى 9000 أو أوقف السيرفر القديم." },
+            { id: 4, cat: "النشر السحابي العالمي", title: "أداة Cloudflare Tunnels للنشر السحابي", snippet: "توليد رابط عالمي آمن `.trycloudflare.com` يفتح موقعك مع أي شخص بالعالم.", cmd: "pkg install cloudflared -y && cloudflared tunnel --url http://localhost:8080", desc: "تنشئ نفق آمن يربط سيرفرك المحلي بشبكة الإنترنت العالمية ليعمل الموقع دائماً.", issues: "تعذر الاتصال: تأكد من تشغيل سيرفر بايثون أولاً." },
+            { id: 5, cat: "أدوات الاختراق المتقدمة", title: "إطار العمل Metasploit Framework", snippet: "أقوى منصة اختبار اختراق وأمن معلومات عالمية لاكتشاف الثغرات.", cmd: "pkg install metasploit -y", desc: "منصة هندسية ضخمة تحتوي على آلاف الثغرات الجاهزة لفحص واختبار الأمان.", issues: "بطء التحميل: يحتاج إنترنت قوي ومساحة فارغة لا تقل عن 1 جيجابايت." },
+            { id: 6, cat: "مستودعات إضافية", title: "تثبيت مستودعات Unstable و X11", snippet: "يفتح لك مستودعات إضافية تحتوي على آلاف الأدوات الرسومية المتقدمة.", cmd: "pkg install unstable-repo x11-repo -y", desc: "تضيف مستودعات جديدة لتنزيل تطبيقات سطح المكتب وواجهات لينكس الرسومية.", issues: "خطأ في التثبيت: حدث حزمك أولاً بأمر pkg update." },
+            { id: 7, cat: "مستودعات الروت", title: "تثبيت مستودع الجذر Root-Repo", cmd: "pkg install root-repo -y", snippet: "مستودع رسمي يتيح تحميل أدوات الـ Root وصلاحيات النظام العليا.", desc: "ضروري لتحميل الأدوات التي تتطلب صلاحيات الجذر على الهاتف.", issues: "لا يوجد صلاحيات روت: الأداة ستعمل بحدود الصلاحيات المتاحة." },
+            { id: 8, cat: "بيئة البرمجة", title: "تثبيت بيئة بايثون الحديثة مع Pip", cmd: "pkg install python python-pip -y", snippet: "البيئة البرمجية الأساسية لتشغيل آلاف السكربتات المكتوبة بلغة Python.", desc: "تثبت لغة بايثون ومدير الحزم الخاص بها لتنزيل مكتبات الويب والذكاء الاصطناعي.", issues: "فشل تثبيت مكتبة: حدد أداة pip باستخدام python -m pip install." },
+            { id: 9, cat: "إدارة التخزين والأنظمة", title: "تثبيت أداة التخزين Proot", cmd: "pkg install proot -y", snippet: "تتيح تشغيل توزيعات لينكس الكاملة (أوبونتو وديبيان) داخل تيرموكس.", desc: "أداة عملاقة تحول هاتفك إلى نظام لينكس متكامل بدون الحاجة لعمل روت.", issues: "خطأ في المسارات: تأكد من خلو مسار التخزين من الحروف العربية." },
+            { id: 10, cat: "المترجمات البرمجية", title: "تثبيت حزمة Clang و Make", cmd: "pkg install clang make cmake -y", snippet: "مترجمات الأكواد البرمجية لتثبيت وتجميع الأدوات الكبيرة.", desc: "مكتبات أساسية لتجميع وترجمة الأكواد المصدرية المصنوعة بلغة سي وسي++.", issues: "فشل التجميع: تأكد من تثبيت حزمة build-essential." },
+            { id: 11, cat: "إدارة الملفات", title: "تثبيت أدوات الضغط Zip & Tar", cmd: "pkg install tar zip unzip -y", snippet: "لضغط وفك ضغط الملفات والسكربتات المضغوطة بسهولة.", desc: "أدوات أساسية للتعامل مع ملفات التخزين المضغوطة بصيغ zip و tar.gz.", issues: "ملف تالف: تأكد من اكتمال تحميل الملف." },
+            { id: 12, cat: "أدوات النظام", title: "تثبيت مكتبة Termux-Tools", cmd: "pkg install termux-tools -y", snippet: "الأدوات الداخلية للتحكم في خصائص الهاتف والتنبيهات.", desc: "تتحكم في إعدادات الاهتزاز والإشعارات والبطارية من داخل تيرموكس.", issues: "عدم تفعيل الصلاحيات: اذن للتطبيق بالوصول للإشعارات من إعدادات الهاتف." },
+            { id: 13, cat: "لغات البرمجة", title: "تثبيت لغة بيرل Perl", cmd: "pkg install perl -y", snippet: "لغة برمجة أساسية لتشغيل العديد من السكربتات والأدوات.", desc: "تستخدم في تشغيل سكربتات فحص المواقع والأمان القديمة والحديثة.", issues: "خطأ في المسار: تأكد من تثبيت حزم التحديث العامة." },
+            { id: 14, cat: "لغات الويب", title: "تثبيت لغة جافاسكريبت Node.js", cmd: "pkg install nodejs -y", snippet: "بيئة تشغيل سكربتات جافاسكريبت وبوتات الويب والسيرفرات المصغرة.", desc: "تشغيل تطبيقات الويب وتطبيقات السيرفر القائمة على نود جزيء.", issues: "خطأ في الإصدار: قم بتحديث الحزم أو إعادة تثبيت حزمة nodejs." },
+            { id: 15, cat: "فحص الشبكات", title: "أداة Hydra لاختبار كلمات المرور", cmd: "pkg install hydra -y", snippet: "أداة تخمين وفحص أمان للخدمات المختلفة.", desc: "أداة سريعة لاختبار قوة كلمات المرور وتجربة فحص حماية خدمات SSH و FTP.", issues: "بطء الفحص: استخدم قوائم كلمات مرور أصغر (Wordlists)." },
+            { id: 16, cat: "فحص القواعد", title: "أداة Sqlmap لفحص ثغرات SQL", cmd: "pkg install git python -y && git clone https://github.com/sqlmap/sqlmap-project.git sqlmap && cd sqlmap && python3 sqlmap.py", snippet: "الأداة الأقوى عالمياً لاكتشاف واستغلال ثغرات الحقن بقواعد البيانات.", desc: "تفحص روابط المواقع بحثاً عن ثغرات قواعد البيانات وتقوم بفحصها آلياً.", issues: "خطأ في الرابط: تأكد من صحة الرابط المستهدف واستخدام بروتوكول https." },
+            { id: 17, cat: "شبكات الواي فاي", title: "أداة Aircrack-ng لفحص اللاسلكي", cmd: "pkg install aircrack-ng -y", snippet: "مجموعة أدوات لتقييم حماية وفحص أمان شبكات اللاسلكي.", desc: "تقييم تشفير الشبكات اللاسلكية واختبار أمان كلمات السر.", issues: "لا يوجد كرت شبكة مدعوم: يتطلب كرت وايفاي خارجي وراوت." },
+            { id: 18, cat: "تحليل التشفير", title: "أداة John the Ripper لكسر التشفير", cmd: "pkg install john -y", snippet: "تحليل كلمات المرور المشفرة واختبار قوة تعقيدها.", desc: "تستخدم لفك تشفير الهاشات وتحليل كلمات السر لحماية الأنظمة.", issues: "صعوبة التخمين: تحتاج لملفات قواميس كلمات مرور قوية." },
+            { id: 19, cat: "فحص الخوادم", title: "أداة Nikto لفحص خوادم الويب", cmd: "pkg install nikto -y", snippet: "تفحص خوادم ومواقع الويب بحثاً عن الملفات الخطيرة والثغرات.", desc: "تكتشف الملفات الحساسة والإعدادات الخاطئة في سيرفرات الاستضافة.", issues: "حظر الـ IP: بعض السيرفرات تحظر الأداة بسبب كثرة الطلبات." },
+            { id: 20, cat: "الخصوصية", title: "أداة Macchanger لتغيير عنوان الماك", cmd: "pkg install macchanger -y", snippet: "لتغيير أو تزييف عنوان MAC الخاص بالشبكة.", desc: "تستخدم لأغراض الحماية والخصوصية وتغيير الهوية الرقمية للشبكة.", issues: "صلاحيات مفقودة: تحتاج لصلاحيات روت لتعمل على كرت الشبكة الحقيقي." },
+            { id: 21, cat: "تحميل الملفات", title: "أداة Git لتحميل السكربتات", cmd: "pkg install git -y", snippet: "لاستنساخ وتحميل مشاريع السكربتات والأدوات مباشرة من GitHub.", desc: "الأداة الأساسية لجلب أي مشروع أو أداة برمجية من الإنترنت.", issues: "خطأ في الاتصال: تأكد من ضبط وكيل الإنترنت أو الشبكة." },
+            { id: 22, cat: "سحب البيانات", title: "أداة Curl & Wget لسحب الروابط", cmd: "pkg install curl wget -y", snippet: "لسحب الملفات والبيانات من الويب ومواقع الإنترنت مباشرة.", desc: "تنزيل الصفحات والملفات والتعامل مع طلبات الـ HTTP من التيرموكس.", issues: "رابط غير مباشر: تأكد من وضع رابط التحميل المباشر للملف." },
+            { id: 23, cat: "تحرير النصوص", title: "برنامج Nano محرر النصوص المتقدم", cmd: "pkg install nano -y", snippet: "محرر نصوص داخل تيرموكس لتعديل ملفات البرمجة والسكربتات.", desc: "يُستخدم لفتح وتعديل ملفات التكوين والكود المصدري بسهولة.", issues: "عدم الحفظ: اضغط Ctrl + O ثم Enter ثم Ctrl + X للخروج والحفظ." },
+            { id: 24, cat: "محرر متقدم", title: "برنامج Vim محرر المبرمجين", cmd: "pkg install vim -y", snippet: "محرر نصوص قوي جداً ومخصص للمبرمجين المتقدمين للتحكم بالأكواد.", desc: "أداة احترافية للتحكم وتعديل الملفات النصية الضخمة.", issues: "صعوبة الخروج: اضغط Esc ثم اكتب :wq ثم Enter للحفظ والخروج." },
+            { id: 25, cat: "إدارة الجلسات", title: "أداة Screen لإدارة الجلسات المعلقة", cmd: "pkg install screen -y", snippet: "تتيح لك فتح أكثر من جلسة عمل والاحتفاظ بها تعمل في الخلفية.", desc: "تحافظ على تشغيل الأوامر والسكربتات حتى لو خرجت من التطبيق مؤقتاً.", issues: "فقدان الجلسة: استعرض الجلسات المفتوحة باستخدام screen -r." },
+            { id: 26, cat: "تقسيم الشاشات", title: "أداة Tmux لتقسيم الشاشات", cmd: "pkg install tmux -y", snippet: "لتقسيم شاشة تيرموكس لأكثر من نافذة عمل في نفس الوقت.", desc: "تمنحك تحكماً رائعاً في تشغيل عدة أوامر بجانب بعضها البعض.", issues: "تعليق الأزرار: استخدم مفتاح التحكم الافتراضي Ctrl + B." },
+            { id: 27, cat: "مراقبة الموارد", title: "أداة Htop لمراقبة المعالج والرام", cmd: "pkg install htop -y", snippet: "تعرض لك استهلاك موارد الهاتف بشكل حي ومتحرك.", desc: "راقب العمليات النشطة واستهلاك المعالج والذاكرة العشوائية لحظة بلحظة.", issues: "حجم الشاشة صغير: قم بتصغير الخط في تيرموكس لتظهر البيانات كاملة." },
+            { id: 28, cat: "عرض الملفات", title: "أداة Tree لعرض المجلدات بشكل شجري", cmd: "pkg install tree -y", snippet: "ترتب وتعرِض محتويات المجلدات والملفات على شكل شجرة منظمة.", desc: "توضح لك تفاصيل الفولدرات الفرعية والملفات بترتيب هندسي رائع.", issues: "مجلد ضخم جداً: سيعرض لك آلاف الملفات، استخدم الحد بـ -L 2." },
+            { id: 29, cat: "معلومات النظام", title: "أداة Neofetch لعرض معلومات الهاتف", cmd: "pkg install neofetch -y", snippet: "تعرض تفاصيل هاتفك ونظام تيرموكس بشكل فخم مع الشعار.", desc: "تظهر مواصفات الجهاز ونظام التشغيل والإصدار بشكل فني أنيق.", issues: "شعار خاطئ: يمكنك تعديل الإعدادات من ملف التكوين الخاص بها." },
+            { id: 30, cat: "مدير الملفات", title: "أداة Ranger مدير الملفات النصي", cmd: "pkg install ranger -y", snippet: "مدير ملفات احترافي داخل تيرموكس يشبه واجهات الكمبيوتر.", desc: "يتيح لك تصفح مجلدات هاتفك ونظامك بكل سهولة وبدون واجهة رسومية.", issues: "معاينة الصور لا تعمل: تتطلب دعم برمجيات X11 الرسومية." },
+            { id: 31, cat: "أنفاق الشبكات", title: "أداة Ngrok لعمل أنفاق الشبكات", cmd: "pkg install wget && wget https://bin.equinox.io/c/4Vm1ja7iaHb/ngrok-stable-linux-arm.zip && unzip ngrok-stable-linux-arm.zip", snippet: "لتوليد روابط خارجية وربط السيرفر المحلي بشبكة الإنترنت.", desc: "تنشئ رابط خارجي يوجه الاتصال إلى السيرفر المحلي على هاتفك.", issues: "انتهاء صلاحية التوكن: قم بتسجيل حساب مجاني ووضع رمز المصادقة." },
+            { id: 32, cat: "مكتبات البايثون", title: "مكتبات تطوير بوتات تليجرام Pyrogram", cmd: "pip install pyrogram tgcrypto requests", snippet: "أهم المكتبات المطلوبة لتطوير وبرمجة وتصميم بوتات تليجرام.", desc: "مكتبات برمجية عالية الأداء للتعامل مع واجهة برمجة تطبيقات تليجرام.", issues: "خطأ في التثبيت: تأكد من تحديث أداة pip أولاً." },
+            { id: 33, cat: "نقل الملفات", title: "أداة Rsync للنسخ الاحتياطي", cmd: "pkg install rsync -y", snippet: "أداة ذكية لنقل ومزامنة الملفات بين المجلدات بكفاءة وسرعة.", desc: "تستخدم لعمل نسخ احتياطي ونقل البيانات بدون فقدان أي ملف.", issues: "مسار خاطئ: تأكد من كتابة المسارات الصحيحة للمجلدات." },
+            { id: 34, cat: "التحكم عن بعد", title: "أداة Openssh للاتصال بالسيرفرات", cmd: "pkg install openssh -y", snippet: "تتيح لك الاتصال بالخوادم البعيدة وإدارة الأنظمة عبر SSH.", desc: "أداة للتحكم في السيرفرات الخارجية وتنفيذ الأوامر عن بعد.", issues: "رفض الاتصال: تأكد من صحة البورت وعنوان IP وكلمة المرور." },
+            { id: 35, cat: "فحص المواقع", title: "أداة Dirsearch لفحص مسارات المواقع", cmd: "pkg install python git -y && git clone https://github.com/maurosoria/dirsearch.git && cd dirsearch && pip install -r requirements.txt", snippet: "فحص وسحب مسارات ومجلدات المواقع الخفية عبر الكويري.", desc: "تبحث عن المجلدات والملفات المخفية داخل المواقع المستهدفة.", issues: "نقص مكتبات: تأكد من تنفيذ أمر تثبيت متطلبات بايثون requirements." },
+            { id: 36, cat: "شبكات وراوتر", title: "أداة Bettercap المتقدمة للشبكات", cmd: "pkg install bettercap -y", snippet: "إطار عمل شامل لمراقبة وتعديل شبكات الاتصال.", desc: "تستخدم لتحليل حركة البيانات وفحص أمان الشبكات المحليّة.", issues: "تحتاج لكروت شبكة قوية ودعم من نواة النظام." },
+            { id: 37, cat: "فحص الثغرات", title: "أداة WPScan لفحص مواقع وردبريس", cmd: "pkg install ruby curl -y && gem install wpscan", snippet: "أداة مخصصة لفحص ثغرات مواقع ومدونات ووردبريس الشهيرة.", desc: "تكشف عن الإضافات والثغرات القديمة في مواقع وردبريس.", issues: "تطلب مفتاح API: قم بالتسجيل المجاني بموقعهم لوضع المفتاح." },
+            { id: 38, cat: "شبكات وسيرفرات", title: "أداة Netcat السويسرية للشبكات", cmd: "pkg install netcat -y", snippet: "لقراءة والكتابة عبر شبكات الاتصال باستخدام بروتوكولات TCP و UDP.", desc: "أداة أساسية لاختبار المنافذ وإرسال واستقبال البيانات بين الأجهزة.", issues: "اتصال مقفل: تأكد من فتح المنافذ المطلوبة على الجدار الفاصل." },
+            { id: 39, cat: "البحث في النصوص", title: "أداة Grep المدمجة للبحث المتقدم", cmd: "pkg install grep -y", snippet: "للبحث عن النصوص والكلمات داخل الملفات والسكربتات بذكاء.", desc: "تستخرج الأسطر المطابقة لكلمة بحث معينة داخل آلاف الملفات.", issues: "حالة الحروف: استخدم مفتاح -i لتجاهل حالة الحروف الكبيرة والصغيرة." },
+            { id: 40, cat: "أدوات النصوص", title: "أداة Sed لمعالجة النصوص الآلية", cmd: "pkg install sed -y", snippet: "تعديل واستبدال النصوص داخل الملفات بضغطة أمر واحدة.", desc: "تستخدم لتعديل النصوص الضخمة والملفات برمجياً بدون فتح محرر.", issues: "خطأ في الصياغة: راجع علامات التنصيص والأوامر بدقة." },
+            { id: 41, cat: "تحليل النصوص", title: "أداة Awk لتحليل البيانات النصية", cmd: "pkg install gawk -y", snippet: "لتحليل واستخراج الجداول والبيانات من النصوص والملفات.", desc: "تستخرج أعمدة معينة وتجري عمليات حسابية على النصوص.", issues: "خطأ في المعاملات: تأكد من تحديد الفواصل الصحيحة بين الأعمدة." },
+            { id: 42, cat: "ضغط الملفات", title: "أداة Gzip لضغط الملفات الفردية", cmd: "pkg install gzip -y", snippet: "ضغط وفك ضغط الملفات الفردية بصيغة gz الشهيرة.", desc: "تقلل حجم ملفات السكربتات واللوج لتوفير مساحة التخزين.", issues: "الملف غير موجود: تأكد من مسار الملف المستهدف." },
+            { id: 43, cat: "نقل عبر الويب", title: "أداة W3m المتصفح النصي داخل تيرموكس", cmd: "pkg install w3m -y", snippet: "تصفح مواقع الإنترنت وفتح صفحات الويب مباشرة من داخل تيرموكس.", desc: "متصفح نصي كامل يتيح لك زيارة المواقع وقراءة محتواها بدون واجهة رسومية.", issues: "عروض الجافاسكريبت: المواقع المعقدة قد لا تظهر بشكل صحيح لتوقف الجافا." },
+            { id: 44, cat: "فحص الشبكات", title: "أداة Whois لمعرفة معلومات النطاقات", cmd: "pkg install whois -y", snippet: "لاستعلام عن تفاصيل وصاحب وتاريخ تسجيل أي موقع أو نطاق.", desc: "تعرض لك معلومات الخوادم والجهات المالكة لأي دومين على الإنترنت.", issues: "دومين غير موجود: تأكد من كتابة اسم النطاق بشكل صحيح." },
+            { id: 45, cat: "فحص الـ DNS", title: "أداة Dnsutils لفحص خوادم الأسماء", cmd: "pkg install dnsutils -y", snippet: "فحص سجلات DNS وعناوين IP للمواكب والنطاقات.", desc: "تتضمن أدوات مثل nslookup و dig للاستعلام عن خوادم الويب.", issues: "خطأ في الشبكة: تأكد من اتصال الإنترنت أو إعدادات الـ DNS." },
+            { id: 46, cat: "فحص السرعة", title: "أداة Speedtest لاختبار سرعة النت", cmd: "pkg install python -y && pip install speedtest-cli && speedtest", snippet: "قياس سرعة الإنترنت الفعلية (رفع وتحميل) من داخل تيرموكس.", desc: "تختبر سرعة اتصال السيرفر بالإنترنت وتعطيك تقريراً مفصلاً.", issues: "بطء الخادم: اختر سيرفر أقرب لدولتك للحصول على نتيجة دقيقة." },
+            { id: 47, cat: "تحميل الفيديوهات", title: "أداة Yt-dlp لتحميل الفيديوهات من اليوتيوب", cmd: "pkg install python ffmpeg -y && pip install yt-dlp", snippet: "تحميل مقاطع الفيديو والصيغ الصوتية من يوتيوب ومئات المواقع.", desc: "أداة عملاقة لتحميل الفيديوهات بأعلى جودة ممكنة مع الدمج التلقائي.", issues: "فشل التحميل: قم بتحديث الأداة دائماً بأمر pip install --upgrade yt-dlp." },
+            { id: 48, cat: "معالجة الصور", title: "أداة Ffmpeg لمعالجة الصوت والصورة", cmd: "pkg install ffmpeg -y", snippet: "للتحويل والمعالجة الكاملة لملفات الفيديو والصوتيات.", desc: "تستطيع قص ودمج وضغط الفيديوهات والصوتيات بأوامر سريعة.", issues: "نقص ترميز: تأكد من تثبيت الحزم الكاملة لـ ffmpeg." },
+            { id: 49, cat: "توليد الباسوردات", title: "أداة Hashcat لفك الهاشات والتشفير", cmd: "pkg install hashcat -y", snippet: "أداة متقدمة جداً لفك التشفير وكلمات المرور باستخدام كروت المعالجة.", desc: "أداة عالمية لاختبار قوة الهاشات وكلمات المرور المشفرة.", issues: "دعم المعالج: تتطلب عتاد قوي وقرص مساحة واسعة لتعمل بكفاءة." },
+            { id: 50, cat: "أمان المجلدات", title: "أداة Cryptsetup لتشفير الأقراص", cmd: "pkg install cryptsetup -y", snippet: "إنشاء وتشفير وحدات التخزين والملفات لحمايتها بسرية تامة.", desc: "تمنحك مستويات تشفير عالية للملفات الحساسة.", issues: "تحتاج لدعم نواة النظام وصلاحيات متقدمة." },
+            { id: 51, cat: "تطوير الويب", title: "تثبيت خادم الويب Apache", cmd: "pkg install apache2 -y", snippet: "تشغيل سيرفر أباتشي لاستضافة مواقع الويب محلياً.", desc: "خادم ويب قوي ومستقر لتشغيل صفحات PHP و HTML.", issues: "تعارض المنافذ: قم بتغيير بورت الاستماع لو كان البورت 80 مشغولا." },
+            { id: 52, cat: "قواعد البيانات", title: "تثبيت قاعدة البيانات MariaDB", cmd: "pkg install mariadb -y", snippet: "إدارة قواعد البيانات وتخزين البيانات محلياً.", desc: "نسخة خفيفة من سيرفر MySQL للتعامل مع الجداول وقواعد البيانات.", issues: "فشل الإقلاع: قم بتشغيل خدمة الخدمة بأمر mysqld_safe." },
+            { id: 53, cat: "لغات البرمجة", title: "تثبيت لغة روبي Ruby", cmd: "pkg install ruby -y", snippet: "تشغيل لغة روبي والسكربتات الخاصة بها.", desc: "لغة برمجة ديناميكية تستخدم في العديد من أدوات الحماية والويب.", issues: "خطأ في الجيمز: حدث حزم الجيمز بأمر gem update." },
+            { id: 54, cat: "لغات البرمجة", title: "تثبيت لغة جو Go Lang", cmd: "pkg install golang -y", snippet: "لتشغيل وتجميع الأدوات المكتوبة بلغة Go السريعة.", desc: "لغة برمجية حديثة تتميز بالسرعة العالية في تنفيذ العمليات.", issues: "ضبط المسارات: تأكد من ضبط متغيرات البيئة GOPATH." },
+            { id: 55, cat: "لغات البرمجة", title: "تثبيت لغة راست Rust", cmd: "pkg install rust -y", snippet: "مترجم لغة راست لتثبيت الأدوات المتقدمة.", desc: "لغة أمان عالية الأداء تستخدم في الأدوات الحديثة.", issues: "نقص مساحة التخزين: تتطلب مساحة جيدة لتثبيت المترجم." },
+            { id: 56, cat: "أدوات الشبكات", title: "تثبيت أداة Traceroute لتتبع المسار", cmd: "pkg install traceroute -y", snippet: "تتبع مسار حزم البيانات عبر الإنترنت إلى الخوادم.", desc: "توضح لك القفزات والمسارات التي تقطعها البيانات للوصول لهدفها.", issues: "حظر البموت: بعض الشبكات تحجب حزم التتبع ICMP." },
+            { id: 57, cat: "أدوات الشبكات", title: "تثبيت أداة Whois الاستعلامية", cmd: "pkg install whois -y", snippet: "معرفة تفاصيل تسجيل النطاقات والمواقع.", desc: "تعرض تواريخ التسجيل والجهات المالكة للدومينات.", issues: "خطأ بالاتصال: تأكد من الاتصال بالإنترنت." },
+            { id: 58, cat: "إدارة العمليات", title: "تثبيت أداة Killall لإنهاء العمليات", cmd: "pkg install psmisc -y", snippet: "إيقاف أي أداة أو عملية معلقة بالاسم فوراً.", desc: "تتيح لك قتل العمليات والبرامج التي لا تستجيب بامر واحد.", issues: "تتطلب اسم العملية الصحيح." },
+            { id: 59, cat: "البحث عن الملفات", title: "تثبيت أداة Findutils المتقدمة", cmd: "pkg install findutils -y", snippet: "البحث الذكي عن الملفات داخل النظام ومجلدات الهاتف.", desc: "تستخرج الملفات والمجلدات بناءً على الحجم والتاريخ والاسم.", issues: "بطء البحث في مجلد التخزين الخارجي بسبب الأذونات." },
+            { id: 60, cat: "فحص الأمان", title: "أداة Lynis لفحص أمان النظام", cmd: "pkg install lynis -y", snippet: "فحص إعدادات الأمان ونقاط الضعف في نظام لينكس وتيرموكس.", desc: "تقدم تقريراً شاملاً لتحسين حماية النظام وإغلاق الثغرات.", issues: "بعض الفحوصات تتطلب صلاحيات الروت." },
+            { id: 61, cat: "أدوات متقدمة", title: "أداة HTTrack لتحميل المواقع بالكامل", cmd: "pkg install httrack -y", snippet: "نسخ وتحميل مواقع الويب بالكامل لتصفحها بدون إنترنت.", desc: "تقوم بسحب جميع ملفات وسكربتات وصور أي موقع لتخزينها محلياً.", issues: "حجم الموقع كبير: قد يتسبب في نفاد مساحة التخزين لديك." },
+            { id: 62, cat: "أمان الويب", title: "أداة SQLMap المتقدمة للفحص الآلي", cmd: "pkg install sqlmap -y", snippet: "طريقة مباشرة لتثبيت أداة SQLMap الرسمية من مستودعات تيرموكس.", desc: "فحص قواعد بيانات المواقع واكتشاف الثغرات بضغطة زر.", issues: "تتطلب اتصال مستقر بالإنترنت لعمل الاختبارات." },
+            { id: 63, cat: "إدارة الشبكات", title: "أداة Iwconfig لفحص كروت الشبكة والواي فاي", cmd: "pkg install wireless-tools -y", snippet: "عرض إعدادات ومعلومات واجهات الاتصال اللاسلكي.", desc: "تستخدم لمتابعة حالة كرت الشبكة وقوة الإشارة.", issues: "تحتاج لصلاحيات الروت للوصول لكرت الشبكة الحقيقي." },
+            { id: 64, cat: "أدوات النظام", title: "أداة Procps لعرض العمليات النشطة", cmd: "pkg install procps -y", snippet: "مجموعة أوامر أساسية لمتابعة العمليات مثل top و ps.", desc: "تراقب البرامج الجارية واستهلاك الذاكرة الحية.", issues: "تحديث شاشة المراقبة يتطلب إغلاق وفتح الأمر." },
+            { id: 65, cat: "ضغط وسحب", title: "أداة Unrar لفك ضغط الملفات المضغوطة RAR", cmd: "pkg install unrar -y", snippet: "فك ضغط الملفات المحمية والمضغوطة بصيغة rar الشهيرة.", desc: "أداة ضرورية للتعامل مع ملفات الأرشيف والكتب المضغوطة بصيغة rar.", issues: "كلمة مرور الأرشيف: تأكد من معرفة باسورد الملف المضغوط إن وجد." },
+            { id: 66, cat: "إدارة الذاكرة", title: "أداة Valgrind لفحص تسريب الذاكرة", cmd: "pkg install valgrind -y", snippet: "تحليل البرامج والأكواد البرمجية لاكتشاف أخطاء الذاكرة.", desc: "تستخدم من قبل المطورين لفحص الأكواد بلغات سي وسي++.", issues: "تبطيء شديد في تنفيذ البرنامج أثناء الفحص." },
+            { id: 67, cat: "إدارة النصوص", title: "أداة Diff لمقارنة الملفات النصية", cmd: "pkg install diffutils -y", snippet: "مقارنة الفروق بين ملفين أو نسختين من السكربتات.", desc: "توضح لك التعديلات والأسطر المختلفة بدقة تامة.", issues: "يجب تحديد المسارات الصحيحة للملفين بدقة." },
+            { id: 68, cat: "أمان وخصوصية", title: "أداة Tor لتوجيه الاتصال بشكل خفي", cmd: "pkg install tor -y", snippet: "تشفير وتوجيه حركة مرور البيانات عبر شبكة تور السرية.", desc: "تخفي هويتك الرقمية وتتيح الاتصال عبر قنوات آمنة.", issues: "بطء في سرعة الإنترنت بسبب كثرة التشفير والقفزات." },
+            { id: 69, cat: "أدوات مساعدة", title: "أداة Tmuxinator لإدارة جلسات تيموكس", cmd: "pkg install tmuxinator -y", snippet: "إدارة مشاريع تيموكس المعقدة بملفات إعدادات سهلة.", desc: "تنظم فتح النوافذ والجلسات المتعددة بأمر واحد.", issues: "تتطلب تثبيت لغة Ruby أولاً لتعمل." },
+            { id: 70, cat: "فحص الأنظمة", title: "أداة Strace لمراقبة استدعاءات النظام", cmd: "pkg install strace -y", snippet: "تتبع الأخطاء وعمليات النظام الخلفية للبرامج.", desc: "تراقب تفاعل البرنامج مع نواة لينكس وتيرموكس.", issues: "تخرج نصوص كثيرة وطويلة جداً أثناء التنفيذ." },
+            { id: 71, cat: "أدوات متقدمة", title: "أداة ClamAV لفحص الفيروسات", cmd: "pkg install clamav -y", snippet: "مضاد للفيروسات وفحص الملفات المشبوهة داخل تيرموكس.", desc: "تبحث عن الملفات الضارة وملفات التجسس في مجلدات النظام.", issues: "تتطلب تحديث قاعدة بيانات الفيروسات بشكل دوري." },
+            { id: 72, cat: "أدوات الويب", title: "أداة Httpie كبديل ذكي لـ Curl", cmd: "pkg install httpie -y", snippet: "إرسال طلبات HTTP واختبار واجهات برمجيات الويب API.", desc: "أداة رائعة ومبسطة جداً للتعامل مع سيرفرات الويب والـ APIs.", issues: "تتطلب تثبيت بيئة بايثون لتعمل بكفاءة." },
+            { id: 73, cat: "إدارة الشبكات", title: "أداة Mtr لدمج بين Ping و Traceroute", cmd: "pkg install mtr -y", snippet: "فحص وتحليل جودة الاتصال بالشبكة والخوادم بشكل مستمر واني.", desc: "تعرض تقريراً حياً عن فقدان الحزم وسرعة الاستجابة للخوادم.", issues: "تتطلب صلاحيات شبكية واسعة لبعض الخصائص." },
+            { id: 74, cat: "تحليل الحزم", title: "أداة Tcpdump لالتقاط حزم الشبكة", cmd: "pkg install tcpdump -y", snippet: "مراقبة وتسجيل حركة البيانات المارة عبر كرت الشبكة.", desc: "أداة تحليل شبكي قوية جداً لفحص البيانات المرسلة والمستقبلة.", issues: "تتطلب صلاحيات الروت لالتقاط حزم كرت الشبكة الحقيقي." },
+            { id: 75, cat: "تطوير الأنظمة", title: "تثبيت أدوات تجميع حزم Deb", cmd: "pkg install dpkg -y", snippet: "إدارة وتثبيت حزم برمجيات لينكس بصيغة deb.", desc: "تتيح لك تثبيت الحزم الخارجية المصممة لتوزيعات ديبيان.", issues: "تعارض التبعيات: قد تتطلب حزم إضافية غير متوفرة." },
+            { id: 76, cat: "فحص الذاكرة", title: "أداة Mimeo لإدارة أنواع الملفات", cmd: "pkg install mime-support -y", snippet: "دعم أنواع الملفات وتحديد التطبيقات الافتراضية للفتح.", desc: "تساعد النظام في معرفة صيغ الملفات المختلفة.", issues: "تعمل في الخلفية ولا تحتاج إعدادات معقدة." },
+            { id: 77, cat: "معالجة النصوص", title: "أداة File لمعرفة نوع الملفات", cmd: "pkg install file -y", snippet: "فحص الملفات ومعرفة صيغتها الحقيقية بغض النظر عن الامتداد.", desc: "تكتشف ما إذا كان الملف نصياً أو تنفيذياً أو مضغوطاً.", issues: "لا توجد مشاكل، أمر بسيط وسريع." },
+            { id: 78, cat: "أدوات الشبكات", title: "أداة Host للاستعلام عن عناوين IP", cmd: "pkg install host -y", snippet: "أداة بسيطة للاستعلام عن النطاقات وعناوين الأيبيهات.", desc: "تحول اسم الموقع إلى عنوان IP والعكس بسرعة.", issues: "تتطلب اتصال إنترنت نشط." },
+            { id: 79, cat: "مكتبات بايثون", title: "تثبيت مكتبة Requests للويب", cmd: "pip install requests", snippet: "مكتبة بايثون الشهيرة لإرسال طلبات HTTP وسحب البيانات.", desc: "تستخدم في برمجة السكربتات والبوتات للاتصال بالمواقع.", issues: "تتطلب تثبيت بايثون و pip أولاً." },
+            { id: 80, cat: "مكتبات بايثون", title: "تثبيت مكتبة BeautifulSoup للتحليل", cmd: "pip install beautifulsoup4", snippet: "مكتبة سحب وتحليل أكواد HTML و XML من الويب.", desc: "تستخدم في استخراج المعلومات وتجميع البيانات من المواقع.", issues: "تتطلب معرفة بسيطة بلغة بايثون للتعامل معها." },
+            { id: 81, cat: "أدوات المطورين", title: "تثبيت مكتبة Flask لتطوير الويب", cmd: "pip install flask", snippet: "إطار عمل خفيف وسريع لبناء تطبيقات ويب بلغة بايثون.", desc: "تتيح لك إنشاء مواقع وسيرفرات ويب برمجية خاصة بك بكل سهولة.", issues: "تتطلب فهم أساسيات التوجيه Routing في بايثون." },
+            { id: 82, cat: "إدارة البيانات", title: "تثبيت مكتبة Pandas للتحليل الإحصائي", cmd: "pip install pandas", snippet: "مكتبة قوية جداً لمعالجة وتحليل البيانات والجداول الضخمة.", desc: "تستخدم في علم البيانات وتحليل الملفات الكبيرة مثل CSV.", issues: "تستهلك مساحة وذاكرة كبيرة عند التعامل مع جداول ضخمة." },
+            { id: 83, cat: "الذكاء الاصطناعي", title: "تثبيت مكتبة Numpy للرياضيات", cmd: "pip install numpy", snippet: "مكتبة الحسابات الرياضية والمصفوفات المتقدمة في بايثون.", desc: "الأساس البرمجي للعديد من مكتبات الذكاء الاصطناعي والرياضيات.", issues: "بعض العمليات تتطلب معالج قوي لتنفيذها بسرعة." },
+            { id: 84, cat: "أدوات المساعدة", title: "تثبيت أداة Colordiff للنصوص الملونة", cmd: "pkg install colordiff -y", snippet: "عرض الفروق بين الملفات النصية بألوان مميزة وواضحة.", desc: "بديل محسن لأمر diff التقليدي يوضح التعديلات بشكل بصري جميل.", issues: "تعتمد كلياً على أمر diff الأساسي." },
+            { id: 85, cat: "إدارة السيرفرات", title: "تثبيت أداة Socat لتحويل المنافذ", cmd: "pkg install socat -y", snippet: "أداة متقدمة لنقل وتوجيه حركة البيانات بين المنافذ والاتصالات.", desc: "تستخدم لربط السيرفرات وتوجيه البورتات بشكل احترافي.", issues: "تحتاج لفهم عميق لبروتوكولات الشبكة والاتصال." },
+            { id: 86, cat: "إدارة النصوص", title: "تثبيت أداة Jq لمعالجة ملفات JSON", cmd: "pkg install jq -y", snippet: "قراءة وتحليل وتعديل ملفات JSON مباشرة من سطر الأوامر.", desc: "أداة رائعة جداً للمبرمجين للتعامل مع استجابات الـ APIs.", issues: "صياغة الأوامر تتطلب دقة في الأقواس والمفاتيح." },
+            { id: 87, cat: "مكتبات بايثون", title: "تثبيت مكتبة Colorama للنصوص الملونة", cmd: "pip install colorama", snippet: "تلوين مخرجات السكربتات والنصوص داخل تيرموكس.", desc: "تضيف ألواناً جذابة لرسائل البايثون والسكربتات التي تطورها.", issues: "تتطلب تفعيل دعم الألوان في الطرفية." },
+            { id: 88, cat: "تطوير البوتات", title: "تثبيت مكتبة Telebot لبوتات تيليجرام", cmd: "pip install pyTelegramBotAPI", snippet: "مكتبة سهلة وسريعة لبرمجة وتطوير بوتات تيليجرام بلغة بايثون.", desc: "تتيح لك بناء بوت تفاعلي متكامل بخطوات بسيطة.", issues: "تتطلب الحصول على توكن البوت من BotFather." },
+            { id: 89, cat: "أدوات النظام", title: "تثبيت أداة Bc للحسابات الرياضية", cmd: "pkg install bc -y", snippet: "آلة حاسبة علمية متقدمة داخل سطر الأوامر.", desc: "تستخدم لإجراء العمليات الحسابية المعقدة والبرمجية.", issues: "تتطلب معرفة بكتابة العمليات الحسابية الصحيحة." },
+            { id: 90, cat: "أمان ونقاط الضعف", title: "تثبيت أداة Sqlite3 لقواعد البيانات الخفيفة", cmd: "pkg install sqlite -y", snippet: "إدارة وإنشاء قواعد بيانات سريعة وخفيفة بصيغة db.", desc: "تستخدم لتخزين البيانات محلياً داخل التطبيقات والسكربتات.", issues: "لا تتوفر فيها ميزات السيرفرات الضخمة مثل MySQL." },
+            { id: 91, cat: "مكتبات البايثون", title: "تثبيت مكتبة Aiogram لبوتات تيليجرام المتقدمة", cmd: "pip install aiogram", snippet: "مكتبة قوية وغير متزامنة (Asynchronous) لتطوير بوتات تيليجرام بكفاءة عالية.", desc: "تعتمد على تقنية asyncio لتشغيل البوتات بسرعات مذهلة وإدارة آلاف المستخدمين.", issues: "تتطلب فهماً متقدماً للتعامل مع الدوال غير المتزامنة async/await." },
+            { id: 92, cat: "إدارة الشبكات", title: "تثبيت أداة Psutil لمراقبة نظام التشغيل", cmd: "pip install psutil", snippet: "مكتبة بايثون للتحكم ومراقبة العمليات واستخدام المعالج والذاكرة برمجياً.", desc: "تتيح لك كتابة سكربتات لمراقبة حالة السيرفر وإصدار تنبيهات عند ارتفاع الاستهلاك.", issues: "تتطلب توفر مساحة ومكتبات البايثون الأساسية." },
+            { id: 93, cat: "أدوات الأمان", title: "تثبيت أداة Hash-identifier لكشف أنواع الهاش", cmd: "pkg install python -y && git clone https://github.com/blackvkng/hash-identifier.git && cd hash-identifier && python2 hash-identifier.py", snippet: "أداة سريعة للتعرف على نوع التشفير الخاص بأي هاش (MD5, SHA256 وغيرها).", desc: "تساعدك في معرفة نوع خوارزمية التشفير المستخدمة للهاش المستهدف.", issues: "بعض النسخ قد تتطلب تشغيلها بلغة بايثون الإصدار الثاني python2." },
+            { id: 94, cat: "تطوير الويب", title: "تثبيت إطار العمل Django للويب", cmd: "pip install django", snippet: "أقوى وأشمل إطار عمل لتطوير مواقع وتطبيقات الويب الكبيرة بلغة بايثون.", desc: "يوفر نظام حماية متكامل وإدارة قواعد بيانات جاهزة للمشاريع الضخمة.", issues: "حجمه كبير نسبياً ويحتاج وقتاً للتثبيت مقارنة بـ Flask." },
+            { id: 95, cat: "إدارة الملفات", title: "تثبيت أداة Lsof لعرض الملفات المفتوحة", cmd: "pkg install lsof -y", snippet: "تعرض قائمة بكافة الملفات المفتوحة والعمليات والشبكات المرتبطة بها.", desc: "مفيدة جداً لمعرفة أي برنامج يستغل ملفاً أو منفذاً معيناً على النظام.", issues: "تتطلب صلاحيات روت لعرض كافة عمليات النظام العميقة." }
+        ];
+
+        function renderFeed(list) {
+            let html = '';
+            list.forEach(tool => {
+                html += `
+                    <div class="post-card">
+                        <span class="post-category">${tool.cat}</span>
+                        <div class="post-title">${tool.title}</div>
+                        <div class="post-snippet">${tool.snippet}</div>
+                        <button class="read-more-btn" onclick="openDetail(${tool.id})">
+                            عرض المزيد عن الأداة <i class="fas fa-angle-left"></i>
+                        </button>
+                    </div>
+                `;
+            });
+            document.getElementById('postsList').innerHTML = html;
+        }
+
+        renderFeed(toolsData);
+
+        function openDetail(id) {
+            let tool = toolsData.find(t => t.id === id);
+            if (!tool) return;
+
+            document.getElementById('homeFeed').style.display = 'none';
+            document.getElementById('detailPage').style.display = 'block';
+
+            document.getElementById('detailTitle').innerText = tool.title;
+            document.getElementById('detailCategory').innerText = tool.cat;
+            document.getElementById('detailCommand').innerText = tool.cmd;
+            document.getElementById('detailDesc').innerText = tool.desc;
+            document.getElementById('detailIssues').innerText = tool.issues;
+        }
+
+        function goHome() {
+            document.getElementById('detailPage').style.display = 'none';
+            document.getElementById('homeFeed').style.display = 'block';
+        }
+
+        function searchTools() {
+            let query = document.getElementById('searchInput').value.toLowerCase().trim();
+            let filtered = toolsData.filter(t => t.title.toLowerCase().includes(query) || t.snippet.toLowerCase().includes(query) || t.cat.toLowerCase().includes(query));
+            renderFeed(filtered);
+        }
+
+        function copyDetailCommand() {
+            let cmd = document.getElementById('detailCommand').innerText;
+            navigator.clipboard.writeText(cmd).then(() => {
+                alert("تم نسخ أمر تيرموكس بنجاح! ✓");
+            });
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                icon.className = "fas fa-sun";
+                text.innerText = "الوضع الفاتح";
+            } else {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                icon.className = "fas fa-moon";
+                text.innerText = "الوضع المظلم";
+            }
+        }
+    </script>
+</body>
+</html>
+EOF
